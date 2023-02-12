@@ -36,4 +36,5 @@
 
 
 # Images:
-![alt text](https://i.imgur.com/6BTk94F.png)
+![Earth and Spaceship](https://i.imgur.com/6BTk94F.png)
+![Laser, Enemy](https://i.imgur.com/dBwUtLr.png)
