@@ -12,7 +12,7 @@
 - Checks for collision between bullets and spaceships rectangles (through pygame.Rect.colliderect method)
 - The enemy that takes the hit from the bullet dies (deleted) and so is the bullet
 
-# The game_init() module
+# The main() module
 - Main part of the game
 - checks for events occuring
 - for KEYDOWN event (keyboard presseed), when arrows (LEFT, RIGHT) or (A, D) are pressed, the moveLeft and moveRight are set to True respectively
