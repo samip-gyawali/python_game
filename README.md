@@ -1,0 +1,35 @@
+# The game_object class
+- Objects for this class are objects in the game i.e. spaceships, enemies, bullets
+- the delete method deletes the object from the class by removing it from the appropriate array (bullets, objects, enemies), and replaces their images with black background
+
+# The create_bullet() module 
+- creates a new bullet with x and y coordinate same as that of the spaceship at that time and adds it to the bullets array
+
+# The create_enemy() module 
+- creates a new enemy with random x-coordinate and at y = 0 and adds it to the enemies array
+
+# The game_logic() module
+- Checks for collision between bullets and spaceships rectangles (through pygame.Rect.colliderect method)
+- The enemy that takes the hit from the bullet dies (deleted) and so is the bullet
+
+# The game_init() module
+- Main part of the game
+- checks for events occuring
+- for KEYDOWN event (keyboard presseed), when arrows (LEFT, RIGHT) or (A, D) are pressed, the moveLeft and moveRight are set to True respectively
+- when moveLeft is True, the spaceship moves to the left for every iteration of the while loop
+- when moveRight is True, the spaceship moves to the right for every iteration of the while loop
+- The code is such that both can't be True at the same time
+- To stop movement, the user has to let go of the keys to trigger the KEYUP event.
+- If A or LEFT key is let go, the moveLeft is set to False, and if D or RIGHT key is let go, the moveRight is set to False
+- When user presses the key F, the create_bullet() module is called
+- If a bullet goes above the screen rect.top <= 0, it is deleted
+- the background is rendered before rendering every object from the objects array
+
+# User Events
+- A logic event is fired every 50 ms, and in the main() module, this event triggers the game_logic() function to check any collisions
+- A move event is fired every 100ms, and in the main() module, this event triggers the movement of enemy towards the earth
+- An enemyCreate event is fired every 3000ms, and in the main() moduke, this event triggers the create_enemy() module
+
+# General pygame
+- https://www.pygame.org/docs/
+- Working of computer graphics: https://www.pygame.org/docs/tut/MoveIt.html
