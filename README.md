@@ -33,3 +33,7 @@
 # General pygame
 - https://www.pygame.org/docs/
 - Working of computer graphics: https://www.pygame.org/docs/tut/MoveIt.html
+
+
+# Images:
+![alt text](https://i.imgur.com/6BTk94F.png)

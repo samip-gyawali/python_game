@@ -15,10 +15,13 @@ class game_object():
 
     def delete(self):
         self.image = pygame.image.load('./images/empty.png')
-        
+        objects.pop(objects.index(self))
         if self.type == 'enemy':
             enemies.pop(enemies.index(self))
 
+        if self.type == 'bullet':
+            bullets.pop(bullets.index(self))
+            
         self.deleted = True
 
 objects = []
@@ -95,7 +98,6 @@ def main():
     for bullet in bullets:
         bullet.rect.bottom -= 1
         if bullet.rect.top < 0:
-            bullets.pop(bullets.index(bullet))
             bullet.delete()
     
     
