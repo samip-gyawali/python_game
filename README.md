@@ -25,6 +25,11 @@
 - If a bullet goes above the screen rect.top <= 0, it is deleted
 - the background is rendered before rendering every object from the objects array
 
+# The game_init() module
+- Loads the initial screen
+- Based on the value of currentSelect ('Launch' or 'Settings' or 'Exit'), it changes the color of the text displayed on the screen for GUI experience
+- When enter is pressed during currentSelect being equal to 'Launch', it calls the main() module and gameplay begins
+
 # User Events
 - A logic event is fired every 50 ms, and in the main() module, this event triggers the game_logic() function to check any collisions
 - A move event is fired every 100ms, and in the main() module, this event triggers the movement of enemy towards the earth
