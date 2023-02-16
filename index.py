@@ -26,10 +26,10 @@ class game_object():
             
         self.deleted = True
 
-objects = []
-bullets = []
-enemies = []
-currentSelect = 'launch'
+objects = [] # stores every single game object
+bullets = [] # stores game_objects that are bullets
+enemies = [] # stores game_objects that are enemies
+currentSelect = 'launch' # stores which one of the options is currently selected
 
 
 def createBullets():

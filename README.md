@@ -27,8 +27,12 @@
 
 # The game_init() module
 - Loads the initial screen
-- Based on the value of currentSelect ('Launch' or 'Settings' or 'Exit'), it changes the color of the text displayed on the screen for GUI experience
-- When enter is pressed during currentSelect being equal to 'Launch', it calls the main() module and gameplay begins
+- Changes the value of currentSelect based on user input for GUI
+- Calls the drawInitialScreen module accordingly
+
+# The drawInitialScreen() module
+- Code to draw the initial screen (options screen)
+- What is displayed depends on the value of currentSelect
 
 # User Events
 - A logic event is fired every 50 ms, and in the main() module, this event triggers the game_logic() function to check any collisions
