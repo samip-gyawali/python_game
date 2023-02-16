@@ -46,9 +46,10 @@ def gameLogic():
     for bullet in  bullets:
         for enemy in enemies:
             if pygame.Rect.colliderect(bullet.rect,enemy.rect):
+                # pygame.event.post(enemyDestroyEvent)
                 enemy.delete()
                 bullet.delete()
-
+                
 
 def drawInitialScreen():
     global screen, currentSelect
@@ -69,7 +70,8 @@ def drawInitialScreen():
     texts = [
         {"content": (gameFont.render("""PROTECT THE EARTH v_1.0""", True, (0,128,255))), "position": (1366//2,100)},
         {"content": (gameFont.render("""SEARGENT, AN ALIEN INVASION IS HAPPENING! IT'S YOUR DUTY""",True, (255,255,255))), "position":(1366//2,200)},
-        {"content": (gameFont.render("""TO SAVE THE EARTH. HURRY, LAUNCH YOUR SPACESHIP NOW""",True, (255,255,255))), "position":(1366//2, 230)}
+        {"content": (gameFont.render("""TO SAVE THE EARTH. HURRY, LAUNCH YOUR SPACESHIP NOW""",True, (255,255,255))), "position":(1366//2, 230)},
+        {"content": (gameFont.render("""Created © by Samip Gyawali 2023""", True, (255,255,255))), "position":(1366//2,700)}
     ]
 
     buttons = [
@@ -125,10 +127,7 @@ def gameInit():
                     sys.exit()
             
             drawInitialScreen()
-        
-        
-            
-    
+                  
 def main():
     global screen, space_ship, enemyPresent
     for event in pygame.event.get():
@@ -138,6 +137,9 @@ def main():
 
         if event.type == logicEvent: gameLogic()
         
+        # if event.type == enemyDestroyed:
+        #     createEnemy()
+
         if event.type == moveEvent:
             for enemy in enemies:
                 enemy.rect.bottom += 10
@@ -204,12 +206,15 @@ enemyPresent = False
 enemyCreateEvent = pygame.USEREVENT + 1
 logicEvent = pygame.USEREVENT + 2
 moveEvent = pygame.USEREVENT + 3
+# enemyDestroyed = pygame.USEREVENT + 4
+# enemyDestroyEvent = pygame.event.Event(enemyDestroyed)
+
+createEnemy()
 
 pygame.time.set_timer(enemyCreateEvent, 3000)
 pygame.time.set_timer(moveEvent, 100)
 pygame.time.set_timer(logicEvent,50)
 
-createEnemy()
 
 while not gameStart:
     gameInit()
