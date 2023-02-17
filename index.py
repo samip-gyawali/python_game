@@ -30,7 +30,7 @@ objects = [] # stores every single game object
 bullets = [] # stores game_objects that are bullets
 enemies = [] # stores game_objects that are enemies
 currentSelect = 'launch' # stores which one of the options is currently selected
-
+life = 5
 
 def createBullets():
     newBullet = game_object('bullet',[space_ship.rect.right-6,768//1.5],'shot.png')
@@ -42,14 +42,17 @@ def createEnemy():
     enemies.append(newEnemy)
 
 def gameLogic():
-    global gameOver
+    global gameOver, life
+    for enemy in enemies:
+        if pygame.Rect.colliderect(enemy.rect, space_ship.rect):
+            gameOver = True
+
     for bullet in  bullets:
         for enemy in enemies:
             if pygame.Rect.colliderect(bullet.rect,enemy.rect):
                 # pygame.event.post(enemyDestroyEvent)
                 enemy.delete()
                 bullet.delete()
-                
 
 def drawInitialScreen():
     global screen, currentSelect
@@ -66,11 +69,13 @@ def drawInitialScreen():
         exitColor = (0,255,128)
 
     gameFont = pygame.font.Font('./fonts/earth.otf',25)
+    nameFont = pygame.font.Font('./fonts/evil_empire.ttf', 70)
+    normalText = pygame.font.Font('./fonts/normal.ttf',30)
 
     texts = [
-        {"content": (gameFont.render("""PROTECT THE EARTH v_1.0""", True, (0,128,255))), "position": (1366//2,100)},
-        {"content": (gameFont.render("""SEARGENT, AN ALIEN INVASION IS HAPPENING! IT'S YOUR DUTY""",True, (255,255,255))), "position":(1366//2,200)},
-        {"content": (gameFont.render("""TO SAVE THE EARTH. HURRY, LAUNCH YOUR SPACESHIP NOW""",True, (255,255,255))), "position":(1366//2, 230)},
+        {"content": (nameFont.render("""COSMIC COMBAT""", True, (0,128,255))), "position": (1366//2,100)},
+        {"content": (normalText.render("""SEARGENT, AN ALIEN INVASION IS HAPPENING! IT'S YOUR DUTY""",True, (255,255,255))), "position":(1366//2,200)},
+        {"content": (normalText.render("""TO SAVE THE EARTH. HURRY, LAUNCH YOUR SPACESHIP NOW""",True, (255,255,255))), "position":(1366//2, 230)},
         {"content": (gameFont.render("""Created © by Samip Gyawali 2023""", True, (255,255,255))), "position":(1366//2,700)}
     ]
 
@@ -129,7 +134,7 @@ def gameInit():
             drawInitialScreen()
                   
 def main():
-    global screen, space_ship, enemyPresent
+    global screen, space_ship, enemyPresent, life
     for event in pygame.event.get():
         if event.type == pygame.QUIT: sys.exit()
 
@@ -143,6 +148,9 @@ def main():
         if event.type == moveEvent:
             for enemy in enemies:
                 enemy.rect.bottom += 10
+                if enemy.rect.top > 768:
+                    enemy.delete()
+                    life -= 1
 
         if event.type == pygame.KEYDOWN:
             key_pressed = event.key
@@ -185,6 +193,7 @@ def main():
         if bullet.rect.top < 0:
             bullet.delete()
     
+
     
     screen.fill((0,0,0))
     screen.blit(background,(0,0))
@@ -196,7 +205,7 @@ def main():
 
 
 screen = pygame.display.set_mode((1366,768))
-pygame.display.set_caption("Protect the Earth")
+pygame.display.set_caption("COSMIC COMBAT v_1.0")
 background = pygame.image.load('./images/bg.jpg')
 space_ship = game_object('space-ship',[5,768//1.5],'spaceship.png')
 gameOver = False
@@ -221,3 +230,9 @@ while not gameStart:
 
 while not gameOver:
     main()
+    if life < 0:
+        gameOver = True
+
+
+
+sys.exit()
