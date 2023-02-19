@@ -30,7 +30,10 @@ objects = [] # stores every single game object
 bullets = [] # stores game_objects that are bullets
 enemies = [] # stores game_objects that are enemies
 currentSelect = 'launch' # stores which one of the options is currently selected
+pauseSelect = 'resume'
 life = 5
+
+
 
 def createBullets():
     newBullet = game_object('bullet',[space_ship.rect.right-6,768//1.5],'shot.png')
@@ -56,7 +59,10 @@ def gameLogic():
 
 def drawInitialScreen():
     global screen, currentSelect
-    
+    # font definition
+    gameFont = pygame.font.Font('./fonts/earth.otf',25)
+    nameFont = pygame.font.Font('./fonts/evil_empire.ttf', 70)
+    normalText = pygame.font.Font('./fonts/normal.ttf',30)
     launchColor = (255,255,255)
     settingsColor = (255,255,255)
     exitColor = (255,255,255)
@@ -68,9 +74,6 @@ def drawInitialScreen():
     elif currentSelect == 'exit':
         exitColor = (0,255,128)
 
-    gameFont = pygame.font.Font('./fonts/earth.otf',25)
-    nameFont = pygame.font.Font('./fonts/evil_empire.ttf', 70)
-    normalText = pygame.font.Font('./fonts/normal.ttf',30)
 
     texts = [
         {"content": (nameFont.render("""COSMIC COMBAT""", True, (0,128,255))), "position": (1366//2,100)},
@@ -132,7 +135,86 @@ def gameInit():
                     sys.exit()
             
             drawInitialScreen()
-                  
+
+def pause():
+    global screen, pauseSelect
+    drawPauseScreen()
+    paused = True
+    while paused:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
+
+            if event.type == pygame.KEYDOWN:
+                key_pressed = event.key
+                if key_pressed == pygame.K_ESCAPE:
+                    paused = False
+                
+                elif key_pressed == pygame.K_DOWN:
+                    if pauseSelect == 'resume':
+                        pauseSelect = 'settings'
+                    elif pauseSelect == 'settings':
+                        pauseSelect = 'exit'
+                    elif pauseSelect == 'exit':
+                        pauseSelect = 'resume'
+                
+                elif key_pressed == pygame.K_UP:
+                    if pauseSelect == 'resume':
+                        pauseSelect = 'exit'
+                    elif pauseSelect == 'settings':
+                        pauseSelect = 'resume'
+                    elif pauseSelect == 'exit':
+                        pauseSelect = 'settings'
+                
+                elif key_pressed == pygame.K_RETURN:
+                    if pauseSelect == 'resume':
+                        paused = False
+                    elif pauseSelect =='settings':
+                        paused = False
+                    elif pauseSelect == 'exit':
+                        sys.exit()
+                drawPauseScreen()
+
+                                
+def drawPauseScreen():
+    global screen, pauseSelect
+    gameFont = pygame.font.Font('./fonts/earth.otf',25)
+    pauseFont = pygame.font.Font('./fonts/evil_empire.ttf', 70)
+
+    resumeColor = (255,255,255)
+    settingsColor = (255,255,255)
+    exitColor = (255,255,255)
+
+    if(pauseSelect == 'resume'):
+        resumeColor = (0,255,128)
+    elif pauseSelect == 'settings':
+        settingsColor = (0,255,128)
+    elif pauseSelect == 'exit':
+        exitColor = (0,255,128)
+
+    
+    pauseText = {"content":pauseFont.render("Paused",True,(255,255,255)),"position":(1366//2,200)}
+    pauseButtons = [
+        {"content":gameFont.render("Resume",True,resumeColor),"position":(1366//2,300)},
+        {"content":gameFont.render("Settings",True,settingsColor),"position":(1366//2,350)},
+        {"content":gameFont.render("Exit",True,exitColor),"position":(1366//2,400)}
+    ]
+
+    screen.fill((0,0,0))
+
+    pauseText_rect = pauseText['content'].get_rect()
+    pauseText_rect.center = pauseText['position']
+
+    screen.blit(pauseText['content'],pauseText_rect)
+
+    for button in pauseButtons:
+        newButton = button['content']
+        newButton_rect = newButton.get_rect()
+        newButton_rect.center = button['position']
+        screen.blit(newButton,newButton_rect)
+        
+    pygame.display.flip()
+
 def main():
     global screen, space_ship, enemyPresent, life
     for event in pygame.event.get():
@@ -163,8 +245,11 @@ def main():
                 space_ship.moveRight = False
                 space_ship.moveLeft = True
 
-            if key_pressed == pygame.K_f:
+            elif key_pressed == pygame.K_f or key_pressed == pygame.K_SPACE:
                 createBullets()
+            
+            elif key_pressed == pygame.K_ESCAPE:
+                pause()
 
         if event.type == pygame.KEYUP:
             key_removed = event.key

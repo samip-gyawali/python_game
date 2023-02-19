@@ -34,6 +34,14 @@
 - Code to draw the initial screen (options screen)
 - What is displayed depends on the value of currentSelect
 
+# The pause() module:
+- Called when user presses the ESCAPE button
+- Changes values of pauseSelect according to user input and calls the drawPauseScreen() module
+
+# The drawPauseScreen() module
+- Called from the pause() module
+- Depending on the value of pauseSelect, it changes the current item selected in the pause-menu
+
 # User Events
 - A logic event is fired every 50 ms, and in the main() module, this event triggers the game_logic() function to check any collisions
 - A move event is fired every 100ms, and in the main() module, this event triggers the movement of enemy towards the earth
@@ -47,4 +55,5 @@
 # Images:
 ![Initial Screen](https://i.imgur.com/cezdTrM.png)
 ![Earth and Spaceship](https://i.imgur.com/6BTk94F.png)
+![Pause Screen](https://i.imgur.com/S0AYJGY.png)
 ![Laser, Enemy](https://i.imgur.com/dBwUtLr.png)
