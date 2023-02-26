@@ -69,3 +69,4 @@
 ![Earth and Spaceship](https://i.imgur.com/6BTk94F.png)
 ![Pause Screen](https://i.imgur.com/S0AYJGY.png)
 ![Laser, Enemy](https://i.imgur.com/dBwUtLr.png)
+![Score, Life](https://i.imgur.com/Ujl8KKU.png)
