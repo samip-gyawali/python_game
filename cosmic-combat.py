@@ -32,7 +32,7 @@ enemies = [] # stores game_objects that are enemies
 currentSelect = 'launch' # stores which one of the options is currently selected
 pauseSelect = 'resume'
 life = 5
-
+score = 0
 
 
 def createBullets():
@@ -45,7 +45,7 @@ def createEnemy():
     enemies.append(newEnemy)
 
 def gameLogic():
-    global gameOver, life
+    global gameOver, life, score
     for enemy in enemies:
         if pygame.Rect.colliderect(enemy.rect, space_ship.rect):
             gameOver = True
@@ -56,6 +56,8 @@ def gameLogic():
                 # pygame.event.post(enemyDestroyEvent)
                 enemy.delete()
                 bullet.delete()
+                score += 10
+                changeScore()
 
 def drawInitialScreen():
     global screen, currentSelect
@@ -174,7 +176,6 @@ def pause():
                     elif pauseSelect == 'exit':
                         sys.exit()
                 drawPauseScreen()
-
                                 
 def drawPauseScreen():
     global screen, pauseSelect
@@ -215,8 +216,25 @@ def drawPauseScreen():
         
     pygame.display.flip()
 
+def changeScore():
+    global screen, score, score_text, score_text_rect
+    normalText = pygame.font.Font('./fonts/normal.ttf',20)
+    score_text = normalText.render(f"Score : {score}", True, (255,255,255))
+    score_text_rect = score_text.get_rect()
+    score_text_rect.left = 10
+    score_text_rect.top = 30
+    
+def changeLife():
+    global screen, life, life_text, life_text_rect
+    normalText = pygame.font.Font('./fonts/normal.ttf',20)
+    life_text = normalText.render(f"Life : {life}", True, (255,255,255))
+    life_text_rect = life_text.get_rect()
+    life_text_rect.left = 10
+    life_text_rect.top = 10
+
 def main():
-    global screen, space_ship, enemyPresent, life
+    global screen, space_ship, enemyPresent, life, score
+    normalText = pygame.font.Font('./fonts/normal.ttf',20)
     for event in pygame.event.get():
         if event.type == pygame.QUIT: sys.exit()
 
@@ -232,6 +250,7 @@ def main():
                 enemy.rect.bottom += 10
                 if enemy.rect.top > 768:
                     enemy.delete()
+                    changeLife()
                     life -= 1
 
         if event.type == pygame.KEYDOWN:
@@ -285,7 +304,9 @@ def main():
 
     for obj in objects:
         screen.blit(obj.image,obj.rect)
-        
+    
+    screen.blit(life_text,life_text_rect)
+    screen.blit(score_text,score_text_rect)
     pygame.display.flip()
 
 
@@ -312,6 +333,14 @@ pygame.time.set_timer(logicEvent,50)
 
 while not gameStart:
     gameInit()
+
+
+score_text = ''
+score_text_rect = ''
+life_text = ''
+life_text_rect = ''
+changeScore()
+changeLife()
 
 while not gameOver:
     main()

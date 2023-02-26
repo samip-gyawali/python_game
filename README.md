@@ -42,6 +42,18 @@
 - Called from the pause() module
 - Depending on the value of pauseSelect, it changes the current item selected in the pause-menu
 
+# The changeScore() module
+- Called initially to set `score_text` variable to initial score `0`
+- Whenever a bullet hits the enemy, it is called again after `score` is changed to display the changed score
+- `score_text` and `score_text_rect` are global variables so that they can be used inside `main` module.
+
+# The changeLife() module
+- Similar to the `changeScore()` module
+- Called initially to set `life_text` variable to initial life `5`
+- Whenever an enemy is missed, it is called again after `life` is changed to display the changed life.
+- `life_text` and `life_text_rect` are global variables so that they can be used inside `main` module.
+
+
 # User Events
 - A logic event is fired every 50 ms, and in the main() module, this event triggers the game_logic() function to check any collisions
 - A move event is fired every 100ms, and in the main() module, this event triggers the movement of enemy towards the earth
