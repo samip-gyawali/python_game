@@ -1,4 +1,4 @@
-import pygame, sys, random
+import pygame, sys, random, os
 
 pygame.font.init()
 
@@ -33,7 +33,6 @@ currentSelect = 'launch' # stores which one of the options is currently selected
 pauseSelect = 'resume'
 life = 5
 score = 0
-
 
 def createBullets():
     newBullet = game_object('bullet',[space_ship.rect.right-6,768//1.5],'shot.png')
@@ -103,8 +102,16 @@ def drawInitialScreen():
     
     pygame.display.flip()
 
+def setHighScore():
+    global score,highScore
+    if score > highScore:
+        with open('high_score.txt','w') as writeFile:
+            writeFile.write(str(score))
+    
+
 def gameInit():
     global currentSelect, gameStart
+
     drawInitialScreen()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -342,11 +349,17 @@ life_text_rect = ''
 changeScore()
 changeLife()
 
+if os.path.exists('high_score.txt'): 
+    with open('high_score.txt','r') as readFile:
+        highScore = int(readFile.readline())
+else:
+    highScore = 0
+
 while not gameOver:
     main()
     if life < 0:
         gameOver = True
 
 
-
+setHighScore()
 sys.exit()

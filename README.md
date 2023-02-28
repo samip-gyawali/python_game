@@ -53,6 +53,12 @@
 - Whenever an enemy is missed, it is called again after `life` is changed to display the changed life.
 - `life_text` and `life_text_rect` are global variables so that they can be used inside `main` module.
 
+# The setHighScore() module:
+- the `highScore` variable is set at the beginning of the program. If `high_score.txt` file exists, `highScore` is set to the current value
+- If it doesn't exist, the `high_score.txt` file is created and `highScore` is set to `0`
+- When game is over this module is called
+- Comparing the current value of `score` with `highScore`, it changes the `highScore` if required.
+
 # User Events
 - A logic event is fired every 50 ms, and in the `main()` module, this event triggers the `game_logic()` function to check any collisions
 - A move event is fired every 100ms, and in the `main()` module, this event triggers the movement of enemy towards the earth
