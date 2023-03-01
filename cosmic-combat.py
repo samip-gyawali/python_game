@@ -44,7 +44,7 @@ def createEnemy():
     enemies.append(newEnemy)
 
 def gameLogic():
-    global gameOver, life, score
+    global gameOver, life, score, enemyCreateTime, makeGameHarder
     for enemy in enemies:
         if pygame.Rect.colliderect(enemy.rect, space_ship.rect):
             gameOver = True
@@ -56,6 +56,12 @@ def gameLogic():
                 enemy.delete()
                 bullet.delete()
                 score += 10
+                makeGameHarder += 10
+                if score > 0 and makeGameHarder%40 == 0:
+                    makeGameHarder = 0
+                    enemyCreateTime = round(int(enemyCreateTime/1.1),-2)
+                    pygame.time.set_timer(enemyCreateEvent, enemyCreateTime)
+
                 changeScore()
 
 def drawInitialScreen():
@@ -103,12 +109,12 @@ def drawInitialScreen():
     pygame.display.flip()
 
 def setHighScore():
-    global score,highScore
+    global score,highScore,newHighScore
     if score > highScore:
+        newHighScore = True
         with open('high_score.txt','w') as writeFile:
             writeFile.write(str(score))
     
-
 def gameInit():
     global currentSelect, gameStart
 
@@ -239,6 +245,44 @@ def changeLife():
     life_text_rect.left = 10
     life_text_rect.top = 10
 
+def final():
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT or event.type == pygame.KEYDOWN: sys.exit()
+
+    screen.fill((0,0,0))
+    drawExitScreen()
+
+def drawExitScreen():
+    global newHighScore, screen
+    nameFont = pygame.font.Font('./fonts/evil_empire.ttf', 70)
+    normalText = pygame.font.Font('./fonts/normal.ttf',30)
+    gameFont = pygame.font.Font('./fonts/earth.otf',25)
+
+    gameOverText = nameFont.render("Game Over",True,(255,255,255))
+    gameOverText_rect = gameOverText.get_rect()
+    gameOverText_rect.center= (1366//2,100)
+    screen.blit(gameOverText,gameOverText_rect)
+
+    if newHighScore:
+        highScoreText = gameFont.render("New High Score Set",True,(255,255,255))
+        highScoreText_rect = highScoreText.get_rect()
+        highScoreText_rect.center = (1366//2,350)
+        screen.blit(highScoreText,highScoreText_rect)
+    
+    finalTexts = [
+        {'text': normalText.render("Well done, Seargent! You bought us some time. Reinforcements are on there way.",True,(255,255,255)),'position':(1366//2,200)},
+        {'text': normalText.render("You can join them on a new spaceship if you want",True,(255,255,255)),'position':(1366//2,240)},
+        {'text':normalText.render("Press any key to exit",True,(255,255,255)),'position':(1366//2,450)},
+        {'text': gameFont.render("""Created © by Samip Gyawali 2023""", True, (255,255,255)), 'position':(1366//2,700)}
+        ]
+    
+    for finalText in finalTexts:
+        finalText_rect = finalText['text'].get_rect()
+        finalText_rect.center = finalText['position']
+        screen.blit(finalText['text'],finalText_rect)
+
+    pygame.display.flip()
+
 def main():
     global screen, space_ship, enemyPresent, life, score
     normalText = pygame.font.Font('./fonts/normal.ttf',20)
@@ -323,7 +367,11 @@ background = pygame.image.load('./images/bg.jpg')
 space_ship = game_object('space-ship',[5,768//1.5],'spaceship.png')
 gameOver = False
 gameStart = False
+gameExit = False
 enemyPresent = False
+newHighScore = False
+
+makeGameHarder = 0
 
 enemyCreateEvent = pygame.USEREVENT + 1
 logicEvent = pygame.USEREVENT + 2
@@ -333,10 +381,11 @@ moveEvent = pygame.USEREVENT + 3
 
 createEnemy()
 
-pygame.time.set_timer(enemyCreateEvent, 3000)
+enemyCreateTime = 3000
+
+pygame.time.set_timer(enemyCreateEvent, enemyCreateTime)
 pygame.time.set_timer(moveEvent, 100)
 pygame.time.set_timer(logicEvent,50)
-
 
 while not gameStart:
     gameInit()
@@ -362,4 +411,8 @@ while not gameOver:
 
 
 setHighScore()
+
+while not gameExit:
+    final()
+
 sys.exit()

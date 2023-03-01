@@ -59,10 +59,24 @@
 - When game is over this module is called
 - Comparing the current value of `score` with `highScore`, it changes the `highScore` if required.
 
+# The final() module:
+- Called after game is over
+- If a user exits or presses any key, the game is closed
+
+# The drawExitScreen() module:
+- Displays the contents of exit screen
+
 # User Events
 - A logic event is fired every 50 ms, and in the `main()` module, this event triggers the `game_logic()` function to check any collisions
 - A move event is fired every 100ms, and in the `main()` module, this event triggers the movement of enemy towards the earth
-- An `enemyCreate` event is fired every 3000ms, and in the `main()` module, this event triggers the `create_enemy()` module
+- An `enemyCreate` event is fired, and in the `main()` module, this event triggers the `create_enemy()` module
+
+# enemyCreate Event
+- The `enemyCreateTime` variable dictates the interval in which the enemyCreate Event is triggered
+- The `makeGameHarder` is increased any time a bullet hits an enemy
+- Everytime the `makeGameHarder` variable hits the value 40, the `enemyCreaateTime` is divided by `1.1`, and enemyCreate event timer is restarted with this changed value
+- So, everytime the player makes 4 kills, the game gets harder as enemies spawn faster
+
 
 # General pygame
 - https://www.pygame.org/docs/
