@@ -6,7 +6,7 @@ class game_object():
     def __init__(self,objType,position,image):
         self.image = pygame.image.load(f"./images/{image}")
         self.rect = self.image.get_rect()
-        self.rect.right = position[0]
+        self.rect.centerx = position[0]
         self.rect.top = position[1]
         self.moveLeft = False
         self.moveRight = False
@@ -35,7 +35,7 @@ life = 5
 score = 0
 
 def createBullets():
-    newBullet = game_object('bullet',[space_ship.rect.right-6,768//1.5],'shot.png')
+    newBullet = game_object('bullet',[space_ship.rect.centerx,768//1.5],'shot.png')
     bullets.append(newBullet)
 
 def createEnemy():
