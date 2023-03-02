@@ -247,7 +247,9 @@ def changeLife():
 
 def final():
     for event in pygame.event.get():
-        if event.type == pygame.QUIT or event.type == pygame.KEYDOWN: sys.exit()
+        if event.type == pygame.QUIT: sys.exit()
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_RETURN: sys.exit()
 
     screen.fill((0,0,0))
     drawExitScreen()
@@ -272,7 +274,7 @@ def drawExitScreen():
     finalTexts = [
         {'text': normalText.render("Well done, Seargent! You bought us some time. Reinforcements are on there way.",True,(255,255,255)),'position':(1366//2,200)},
         {'text': normalText.render("You can join them on a new spaceship if you want",True,(255,255,255)),'position':(1366//2,240)},
-        {'text':normalText.render("Press any key to exit",True,(255,255,255)),'position':(1366//2,450)},
+        {'text':normalText.render("Press Enter to exit",True,(255,255,255)),'position':(1366//2,450)},
         {'text': gameFont.render("""Created © by Samip Gyawali 2023""", True, (255,255,255)), 'position':(1366//2,700)}
         ]
     
